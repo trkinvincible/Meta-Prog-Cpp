@@ -1,8 +1,12 @@
 #pragma once
 #include "command.h"
+#include <iostream>
 #include <string>
 #include <array>
 #include <string_view>
+#include <string>
+#include <cstddef>
+#include <concepts>
 
 //##
 // add constexpr varaibles
@@ -51,20 +55,20 @@ std::string to_string(const A& a) { return "I am A"; }
 std::string to_string(const C& c) { return "I am C"; }
 
 // Solution in C++ 17
-template< typename C, typename = bool >
-struct has_serialize
-  : std::false_type
-{};
+//template< typename C, typename = bool >
+//struct has_serialize
+//  : std::false_type
+//{};
 
-template< typename C >
-struct has_serialize< C, typename std::enable_if_t<
-                         std::is_same_v<
-                           decltype(C::serialize()),
-                           std::string>, bool
-                         >
-                    >
-  : std::true_type
-{};
+//template< typename C >
+//struct has_serialize< C, typename std::enable_if_t<
+//                         std::is_same_v<
+//                           decltype(C::serialize()),
+//                           std::string>, bool
+//                         >
+//                    >
+//  : std::true_type
+//{};
 
 //(or if that non-static member function)
 
@@ -78,15 +82,15 @@ struct has_serialize< C, typename std::enable_if_t<
 //  : std::true_type
 //{};
 
-template<typename T>
-std::string serialize(T&& obj) {
-    if constexpr (has_serialize<T>()){
-        return obj.serialize();
-    }else{
-        T copy(obj);
-        return to_string(copy);
-    }
-}
+//template<typename T>
+//std::string serialize(T&& obj) {
+//    if constexpr (has_serialize<T>()){
+//        return obj.serialize();
+//    }else{
+//        T copy(obj);
+//        return to_string(copy);
+//    }
+//}
 
 // Solution in C++ 11/14
 //template<typename T, std::enable_if_t<std::is_same_v<
@@ -121,6 +125,21 @@ std::string serialize(T&& obj) {
 //std::string serialize(T&& obj) {
 //    return obj.serialize();
 //}
+
+// Solution in C++ 20
+template<typename T>
+concept has_serialize = std::is_same_v<std::void_t<decltype(T::serialize())>, void>;
+
+template<typename T>
+requires has_serialize<T>
+std::string serialize(T&& obj) {
+    return obj.serialize();
+}
+template<typename T>
+std::string serialize(T&& obj) {
+    T copy(obj);
+    return to_string(copy);
+}
 
 template<typename Object>
 std::string printSerializedObject(Object&& obj) {

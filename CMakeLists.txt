@@ -14,6 +14,7 @@ set (_HEADER_
   ./variadic_tem_std_unique.h
   ./fold_expr_std_unique.h
   ./constexpr_std_unique_stl.h
+  ./ways_to_print_container.h
 )
 
 set (_SOURCES_

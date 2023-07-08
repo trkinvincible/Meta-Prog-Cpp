@@ -5,6 +5,7 @@
 #include "./static_keys_map.h"
 #include "./stdfunction_impl.h"
 #include "./stdUnique_Impl.h"
+#include "./ways_to_print_container.h"
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +36,14 @@ int main(int argc, char *argv[])
         obj.reset(new stdUnique_Impl());
     }
         break;
+    case 5:
+    {
+        print_sequence(std::integer_sequence<unsigned, 9, 2, 5, 1, 9, 1, 6>{});
+        printer(1, 2, 3, "abc");
+    }
+        break;
     }
 
-    obj->execute();
+    if (obj)
+        obj->execute();
 }

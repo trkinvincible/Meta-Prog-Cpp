@@ -7,7 +7,13 @@ set(CMAKE_CXX_STANDARD 20)
 # Source
 set (_HEADER_
   ./command.h
-  ./Test.h
+  ./static_keys_map.h
+  ./sfine_example.h
+  ./stdfunction_impl.h
+  ./stdUnique_Impl.h
+  ./variadic_tem_std_unique.h
+  ./fold_expr_std_unique.h
+  ./constexpr_std_unique_stl.h
 )
 
 set (_SOURCES_

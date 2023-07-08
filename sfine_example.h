@@ -1,4 +1,5 @@
 #pragma once
+
 #include "command.h"
 #include <iostream>
 #include <string>
@@ -7,37 +8,6 @@
 #include <string>
 #include <cstddef>
 #include <concepts>
-
-//##
-// add constexpr varaibles
-// usecase: say i have a map of <keys, Values> keys i know in compile time itself. With this implementation can easily catch wrong query into map
-// also map construction is done at compile time which will boost bootup performance.
-//##
-namespace Rk{
-    static constexpr char Key_of_0[] = "123";
-    static constexpr char Key_of_1[] = "456";
-    static constexpr char Key_of_2[] = "789";
-    static constexpr std::array<std::string_view, 3> Keys{Key_of_0, Key_of_1, Key_of_2};
-
-    static constexpr char Key_of_dummy[] = "000";
-
-    template<const char* key>
-    constexpr bool isValidKey(){
-        for (const auto& i : Keys){
-            if (key == i)
-                return true;
-        }
-        return false;
-    }
-}
-using namespace Rk;
-
-template<const char* key>
-void GetValue(){
-
-    static_assert(isValidKey<key>(), "key specified must be from the one defined in that map");
-    //.. proceed further
-}
 
 //##
 // When working with vendor libraries we cannot expect them to implement all APIs which may not be relevent for them
@@ -55,20 +25,20 @@ std::string to_string(const A& a) { return "I am A"; }
 std::string to_string(const C& c) { return "I am C"; }
 
 // Solution in C++ 17
-//template< typename C, typename = bool >
-//struct has_serialize
-//  : std::false_type
-//{};
+template< typename C, typename = bool >
+struct has_serialize
+  : std::false_type
+{};
 
-//template< typename C >
-//struct has_serialize< C, typename std::enable_if_t<
-//                         std::is_same_v<
-//                           decltype(C::serialize()),
-//                           std::string>, bool
-//                         >
-//                    >
-//  : std::true_type
-//{};
+template< typename C >
+struct has_serialize< C, typename std::enable_if_t<
+                         std::is_same_v<
+                           decltype(C::serialize()),
+                           std::string>, bool
+                         >
+                    >
+  : std::true_type
+{};
 
 //(or if that non-static member function)
 
@@ -82,15 +52,14 @@ std::string to_string(const C& c) { return "I am C"; }
 //  : std::true_type
 //{};
 
-//template<typename T>
-//std::string serialize(T&& obj) {
-//    if constexpr (has_serialize<T>()){
-//        return obj.serialize();
-//    }else{
-//        T copy(obj);
-//        return to_string(copy);
-//    }
-//}
+template<typename T>
+static std::string serialize(T&& obj) {
+    if constexpr (has_serialize<T>()){
+        return obj.serialize();
+    }else{
+        return to_string(obj);
+    }
+}
 
 // Solution in C++ 11/14
 //template<typename T, std::enable_if_t<std::is_same_v<
@@ -127,35 +96,32 @@ std::string to_string(const C& c) { return "I am C"; }
 //}
 
 // Solution in C++ 20
-template<typename T>
-concept has_serialize = std::is_same_v<std::void_t<decltype(T::serialize())>, void>;
+//template<typename T>
+//concept has_serialize = std::is_same_v<std::void_t<decltype(T::serialize())>, void>;
 
-template<typename T>
-requires has_serialize<T>
-std::string serialize(T&& obj) {
-    return obj.serialize();
-}
-template<typename T>
-std::string serialize(T&& obj) {
-    T copy(obj);
-    return to_string(copy);
-}
+//template<typename T>
+//requires has_serialize<T>
+//std::string serialize(T&& obj) {
+//    return obj.serialize();
+//}
+//template<typename T>
+//std::string serialize(T&& obj) {
+//    T copy(obj);
+//    return to_string(copy);
+//}
 
 template<typename Object>
 std::string printSerializedObject(Object&& obj) {
     return serialize(std::forward<Object>(obj));
 }
 
-class test_move : public Command
+class sfine_example : public Command
 {
 public:
     void execute()
     {
-        GetValue<Key_of_0>(); // this will compile
-        //GetValue<Key_of_dummy>(); // this will not compile
-
         std::cout << printSerializedObject(A()) << std::endl;
-        std::cout << printSerializedObject(B()) << std::endl;
-        std::cout << printSerializedObject(C()) << std::endl;
+//        std::cout << printSerializedObject(B()) << std::endl;
+//        std::cout << printSerializedObject(C()) << std::endl;
     }
 };

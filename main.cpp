@@ -6,6 +6,7 @@
 #include "./stdfunction_impl.h"
 #include "./stdUnique_Impl.h"
 #include "./ways_to_print_container.h"
+#include "./stdRankImpl.h"
 
 int main(int argc, char *argv[])
 {
@@ -40,6 +41,13 @@ int main(int argc, char *argv[])
     {
         print_sequence(std::integer_sequence<unsigned, 9, 2, 5, 1, 9, 1, 6>{});
         printer(1, 2, 3, "abc");
+    }
+        break;
+    case 6:
+    {
+        int a[1][1][1];
+        static_assert(getDimention<decltype(a)>() == 3);
+        static_assert(getDimention<int[]>() == 1);
     }
         break;
     }

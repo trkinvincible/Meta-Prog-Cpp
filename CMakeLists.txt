@@ -15,6 +15,7 @@ set (_HEADER_
   ./fold_expr_std_unique.h
   ./constexpr_std_unique_stl.h
   ./ways_to_print_container.h
+  ./stdRankImpl.h
 )
 
 set (_SOURCES_

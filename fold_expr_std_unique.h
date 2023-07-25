@@ -22,7 +22,7 @@ constexpr auto last(Args ...args)
 {
     constexpr auto identity = [](auto i) { return i; };
     // fold expression with comma operator separates the arguments.
-    //return (args, ...); // will work but with warning that variables are ignored.
+    //return (args, ...); // will work but with warning that return variables are ignored.
     return (identity(args), ...);
 }
 
@@ -35,7 +35,8 @@ constexpr auto last(Args ...args)
 //    return std::get<N-1>(t);
 //}
 
-// this is defined as folder expression is unfolded with + operator in line:16 with left operand as vector and right operand as unpacked integral_constant.
+// this is defined as folder expression is unfolded with + operator in line:16 with left operand as vector
+// and right operand as unpacked integral_constant.
 template <int... I, int X>
 constexpr auto operator+(Vector<I...> v, std::integral_constant<int, X> x)
 {

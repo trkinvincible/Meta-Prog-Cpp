@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
         int a[1][1][1];
         static_assert(getDimention<decltype(a)>() == 3);
         static_assert(getDimention<int[]>() == 1);
+        std::cout << "The tuple: " << std::make_tuple(2,'2',2.9) << '\n';
     }
         break;
     }

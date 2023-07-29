@@ -16,6 +16,7 @@ set (_HEADER_
   ./constexpr_std_unique_stl.h
   ./ways_to_print_container.h
   ./stdRankImpl.h
+  ./check_if_prime.h
 )
 
 set (_SOURCES_

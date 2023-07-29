@@ -7,6 +7,7 @@
 #include "./stdUnique_Impl.h"
 #include "./ways_to_print_container.h"
 #include "./stdRankImpl.h"
+#include "./check_if_prime.h"
 
 int main(int argc, char *argv[])
 {
@@ -49,6 +50,11 @@ int main(int argc, char *argv[])
         static_assert(getDimention<decltype(a)>() == 3);
         static_assert(getDimention<int[]>() == 1);
         std::cout << "The tuple: " << std::make_tuple(2,'2',2.9) << '\n';
+    }
+        break;
+    case 7:
+    {
+        static_assert(IsPrime<5>::value == true);
     }
         break;
     }

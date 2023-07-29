@@ -29,14 +29,14 @@ void print_tuple_impl(std::basic_ostream<Ch,Tr>& os,
     ((os << (Is == 0? "" : ", ") << std::get<Is>(t)), ...);
 }
 
-//template<class Ch, class Tr, class... Args>
-//auto& operator<<(std::basic_ostream<Ch, Tr>& os,
-//                 const std::tuple<Args...>& t)
-//{
-//    os << "(";
-//    print_tuple_impl(os, t, std::index_sequence_for<Args...>{});
-//    return os << ")";
-//}
+template<class Ch, class Tr, class... Args>
+auto& operator<<(std::basic_ostream<Ch, Tr>& os,
+                 const std::tuple<Args...>& t)
+{
+    os << "(";
+    print_tuple_impl(os, t, std::index_sequence_for<Args...>{});
+    return os << ")";
+}
 
 template<typename... Ts>
 std::ostream& operator<<(std::ostream& os, std::tuple<Ts...> const& theTuple)

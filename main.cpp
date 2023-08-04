@@ -8,6 +8,7 @@
 #include "./ways_to_print_container.h"
 #include "./stdRankImpl.h"
 #include "./check_if_prime.h"
+#include "./find_gcd.h"
 
 int main(int argc, char *argv[])
 {
@@ -55,6 +56,12 @@ int main(int argc, char *argv[])
     case 7:
     {
         static_assert(IsPrime<5>::value == true);
+    }
+        break;
+
+    case 8:
+    {
+        static_assert(gcd<10,45>::value == euclid_mod(10,45));
     }
         break;
     }
